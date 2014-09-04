@@ -7,10 +7,6 @@ package LWP::UserAgent::CHICaching;
 our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.001';
 
-1;
-
-__END__
-
 =pod
 
 =encoding utf-8
@@ -22,6 +18,13 @@ LWP::UserAgent::CHICaching - LWP::UserAgent with caching based on CHI
 =head1 SYNOPSIS
 
 =head1 DESCRIPTION
+
+=cut
+
+1;
+
+__END__
+
 
 =head1 BUGS
 
