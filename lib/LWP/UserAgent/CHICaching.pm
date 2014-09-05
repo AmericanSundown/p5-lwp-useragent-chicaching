@@ -52,6 +52,35 @@ sub _build_key {
 	return $self->request_uri->canonical->as_string;
 }
 
+sub request {
+	my $self = shift;
+	my @args = @_;
+	my $request = $args[0];
+
+	return $self->SUPER::request(@args) if $request->method ne 'GET';
+
+	$self->request_uri($request->uri);
+
+	my $cached = $self->cache->get($self->key); # CHI will take of expiration
+
+	if (defined($cached)) {
+		return $cached;
+	} else {
+		my $expires_in = 0;
+		my $res = $self->SUPER::request(@args);
+		if ($res->is_success) { # Cache only successful responses for now
+			my $cc = $res->header('Cache-Control');
+			if (defined($cc)) {
+				($expires_in) = ($cc =~ m/max-age=(\d+)/);
+			}
+			if ($expires_in > 0) {
+				$self->cache->set($self->key, $res, { expires_in => $expires_in });
+			}
+		}
+		return $res;
+	}
+}
+
 1;
 
 __END__
