@@ -92,9 +92,7 @@ __END__
 =head1 BUGS
 
 Please report any bugs to
-L<http://rt.cpan.org/Dist/Display.html?Queue=LWP-UserAgent-CHICaching>.
-
-=head1 SEE ALSO
+L<https://github.com/kjetilk/p5-lwp-useragent-chicaching/issues>.
 
 =head1 AUTHOR
 
@@ -102,7 +100,7 @@ Kjetil Kjernsmo E<lt>kjetilk@cpan.orgE<gt>.
 
 =head1 ACKNOWLEDGEMENTS
 
-This module has been strongly influenced by L<LWP::UserAgent::WithCache>
+It was really nice looking at the code of L<LWP::UserAgent::WithCache>, when I wrote this.
 
 =head1 COPYRIGHT AND LICENCE
 
