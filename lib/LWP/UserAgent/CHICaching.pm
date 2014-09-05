@@ -97,9 +97,12 @@ L<https://github.com/kjetilk/p5-lwp-useragent-chicaching/issues>.
 =head1 TODO
 
 This is a very early release, meant just for the author's immediate
-needs. There are another two things that I'd like to do:
+needs. These are the things that I'd like to do:
 
 =over
+
+=item * I haven't found a good way to test this module: How do you
+test that at the webserver, nothing happens?
 
 =item * Enable smarter generation of keys, so that semantically
 identical content can be cached efficiently even though they may have
