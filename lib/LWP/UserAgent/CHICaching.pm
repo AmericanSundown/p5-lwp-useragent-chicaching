@@ -38,6 +38,7 @@ has key => (
 				is => 'rw',
 				isa => Str,
 				lazy => 1,
+				clearer => 1,
 				builder => '_build_key'
 			  );
 
@@ -45,7 +46,8 @@ has key => (
 has request_uri => (
 						  is =>'rw',
 						  isa => Uri,
-						  coerce => 1
+						  coerce => 1,
+						  trigger => \&clear_key,
 						 );
 
 sub _build_key {
