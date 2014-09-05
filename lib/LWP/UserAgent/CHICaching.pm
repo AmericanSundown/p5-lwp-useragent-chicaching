@@ -45,6 +45,7 @@ has key => (
 has request_uri => (
 						  is =>'rw',
 						  isa => Uri,
+						  coerce => 1
 						 );
 
 sub _build_key {
@@ -61,7 +62,7 @@ sub request {
 
 	$self->request_uri($request->uri);
 
-	my $cached = $self->cache->get($self->key); # CHI will take of expiration
+	my $cached = $self->cache->get($self->key); # CHI will take care of expiration
 
 	if (defined($cached)) {
 		return $cached;
