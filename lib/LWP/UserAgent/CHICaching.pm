@@ -94,6 +94,22 @@ __END__
 Please report any bugs to
 L<https://github.com/kjetilk/p5-lwp-useragent-chicaching/issues>.
 
+=head1 TODO
+
+This is a very early release, meant just for the author's immediate
+needs. There are another two things that I'd like to do:
+
+=over
+
+=item * Enable smarter generation of keys, so that semantically
+identical content can be cached efficiently even though they may have
+different URIs.
+
+=item * Support all of L<RFC7234|http://tools.ietf.org/html/rfc7234>
+and <RFC7232|http://tools.ietf.org/html/rfc7232>
+
+=back
+
 =head1 AUTHOR
 
 Kjetil Kjernsmo E<lt>kjetilk@cpan.orgE<gt>.
