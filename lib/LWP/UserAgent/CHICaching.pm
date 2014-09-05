@@ -4,11 +4,12 @@ use warnings;
 
 package LWP::UserAgent::CHICaching;
 
-extends 'LWP::UserAgent';
 use CHI;
 use Moo;
-use Types::Standard qw(InstanceOf);
+use Types::Standard qw(Str InstanceOf);
 use Types::URI -all;
+extends 'LWP::UserAgent';
+
 
 our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.001';
@@ -35,9 +36,9 @@ has cache => (
 
 has key => (
 				is => 'rw',
-				isa => 'Str',
+				isa => Str,
 				lazy => 1,
-				builder =>_build_key
+				builder => '_build_key'
 			  );
 
 
