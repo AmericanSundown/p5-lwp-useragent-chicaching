@@ -7,7 +7,7 @@ use Types::Standard qw(Str InstanceOf);
 use Types::URI -all;
 
 our $AUTHORITY = 'cpan:KJETILK';
-our $VERSION   = '0.001';
+our $VERSION   = '0.002';
 
 =pod
 
