@@ -34,6 +34,7 @@ like($res2->content, qr/Hello DAHUT/, 'Second request, got the right shout');
 like($res2->content, qr/Counter: 1$/, 'Second request, the count is the same');
 unlike($res2->content, qr/Counter: 2/, 'Second request, the count is not 2');
 
+note "Sleep 5 secs to expire cache"
 sleep 5;
 
 my $res3 = $ua->get("http://localhost:3000/?query=DAHUT");
