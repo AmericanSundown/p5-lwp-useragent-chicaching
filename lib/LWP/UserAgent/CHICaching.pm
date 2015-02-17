@@ -1,8 +1,8 @@
+package LWP::UserAgent::CHICaching;
+
 use 5.006000;
 use strict;
 use warnings;
-
-package LWP::UserAgent::CHICaching;
 
 use CHI;
 use Moo;
