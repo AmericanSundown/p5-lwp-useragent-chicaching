@@ -24,7 +24,45 @@ LWP::UserAgent::CHICaching - LWP::UserAgent with caching based on CHI
 
 =head1 SYNOPSIS
 
+The usual way of using L<LWP::UserAgent>, really, just pass a C<cache>
+parameter with a L<CHI> object to the constructor:
+
+  my $cache = CHI->new( driver => 'Memory', global => 1 );
+  my $ua = LWP::UserAgent::CHICaching->new(cache => $cache);
+  my $res1 = $ua->get("http://localhost:3000/?query=DAHUT");
+
 =head1 DESCRIPTION
+
+This is YA caching user agent. When the client makes a request to the
+server, sometimes the response should be cached, so that no actual
+request has to be sent at all, or possibly just a request to validate
+the cache. HTTP 1.1 defines how to do this. This module makes it
+possible to use the very flexible L<CHI> module to manage such a
+cache.
+
+But why? Mainly because I wanted to use L<CHI> facilities, and partly
+because I wanted to focus on HTTP 1.1 features.
+
+=head2 Attributes
+
+=over
+
+=item C<< cache >>
+
+Used to set the C<CHI> object to be used as cache in the constructor.
+
+=item C<< key >>, C<< clear_key >>
+
+The key to use for a response. Defaults to the canonical URI of the
+request. May make sense to set differently in the future, but should
+probably be left alone for now.
+
+=item C<< request_uri >>
+
+The Request-URI of the request. When set, it will clear the C<key>,
+but should probably be left to be used internally for now.
+
+=back
 
 =cut
 
@@ -87,6 +125,13 @@ sub request {
 1;
 
 __END__
+
+=head1 LIMITATIONS
+
+Will only cache C<GET> requests and only looks at the C<Cache-Control:
+max-age> header. Does not make any attempts to see if the response is
+invalid.
+
 
 
 =head1 BUGS
