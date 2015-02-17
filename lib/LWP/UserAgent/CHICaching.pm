@@ -35,9 +35,10 @@ parameter with a L<CHI> object to the constructor:
 This is YA caching user agent. When the client makes a request to the
 server, sometimes the response should be cached, so that no actual
 request has to be sent at all, or possibly just a request to validate
-the cache. HTTP 1.1 defines how to do this. This module makes it
-possible to use the very flexible L<CHI> module to manage such a
-cache.
+the cache. HTTP 1.1 defines how to do this. This class simply extends
+L<LWP::UserAgent> with L<LWP::UserAgent::Role::CHICaching> (also in
+this distribution) which is doing the real work to make it possible to
+use the very flexible L<CHI> module to manage such a cache.
 
 But why? Mainly because I wanted to use L<CHI> facilities, and partly
 because I wanted to focus on HTTP 1.1 features.
