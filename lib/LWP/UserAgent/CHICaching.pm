@@ -43,7 +43,7 @@ cache.
 But why? Mainly because I wanted to use L<CHI> facilities, and partly
 because I wanted to focus on HTTP 1.1 features.
 
-=head2 Attributes
+=head2 Attributes and Methods
 
 =over
 
@@ -61,6 +61,10 @@ probably be left alone for now.
 
 The Request-URI of the request. When set, it will clear the C<key>,
 but should probably be left to be used internally for now.
+
+=item C<< request >>
+
+Overriding L<LWP::UserAgent>'s request method.
 
 =back
 
