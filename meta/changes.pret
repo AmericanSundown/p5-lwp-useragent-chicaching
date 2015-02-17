@@ -1,6 +1,16 @@
 # This file acts as the project's changelog.
 
 `LWP-UserAgent-CHICaching 0.001 cpan:KJETILK`
-	issued  2014-09-03;
+	issued  2015-02-17;
 	label   "Initial release".
 
+`LWP-UserAgent-CHICaching 0.002 cpan:KJETILK`
+	issued  2015-02-17;
+	label   "Create a Role";
+	changeset [
+            dcs:versus `LWP-UserAgent-CHICaching 0.001 cpan:KJETILK`;
+            item [ rdfs:label "Refactor the code into a Role.";
+                   a dcs:Change;
+                   dcs:thanks cpan:MSTROUT 
+                 ]
+            ].
