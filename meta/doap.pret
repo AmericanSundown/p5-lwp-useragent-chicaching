@@ -1,6 +1,7 @@
 # This file contains general metadata about the project.
 
 @prefix : <http://usefulinc.com/ns/doap#>.
+@prefix prov: <http://www.w3.org/ns/prov#>.
 
 `LWP-UserAgent-CHICaching`
 	:programming-language "Perl" ;
@@ -8,11 +9,16 @@
 	:homepage             <https://metacpan.org/release/LWP-UserAgent-CHICaching>;
 	:download-page        <https://metacpan.org/release/LWP-UserAgent-CHICaching>;
 	:bug-database         <https://github.com/kjetilk/p5-lwp-useragent-chicaching/issues>;
-	:repository           [ a :GitRepository; :browse <https://github.com/kjetilk/p5-lwp-useragent-chicaching> ];
+	:repository           [ a :GitRepository; 
+                                :browse <https://github.com/kjetilk/p5-lwp-useragent-chicaching> ;
+                                prov:has_provenance <http://git2prov.org/git2prov?giturl=https%3A%2F%2Fgithub.com%2Fkjetilk%2Fp5-lwp-useragent-chicaching&serialization=PROV-O#>
+                              ];
+        :category             <http://dbpedia.org/resource/Category:Web_development> ;
 	:created              2014-09-03;
 	:license              <http://dev.perl.org/licenses/>;
-	:maintainer           cpan:KJETILK;
-	:developer            cpan:KJETILK.
+        :maintainer           <http://www.kjetil.kjernsmo.net/foaf#me>;
+        :developer            <http://www.kjetil.kjernsmo.net/foaf#me>.
+    
 
 <http://dev.perl.org/licenses/>
 	dc:title  "the same terms as the perl 5 programming language system itself".
