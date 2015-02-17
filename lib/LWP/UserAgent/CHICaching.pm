@@ -101,9 +101,6 @@ needs. These are the things that I'd like to do:
 
 =over
 
-=item * I haven't found a good way to test this module: How do you
-test that at the webserver, nothing happens?
-
 =item * Enable smarter generation of keys, so that semantically
 identical content can be cached efficiently even though they may have
 different URIs.
