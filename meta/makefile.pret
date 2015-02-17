@@ -3,7 +3,14 @@
 @prefix : <http://ontologi.es/doap-deps#>.
 
 `LWP-UserAgent-CHICaching`
-	:test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
-	:develop-recommendation [ :on "Dist::Inkt 0.001"^^:CpanId ];
-	.
+    :test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
+    :test-requirement       [ :on "LWP::Protocol::PSGI"^^:CpanId ];
+    :test-requirement       [ :on "Plack::Request"^^:CpanId ];
+    :runtime-requirement    [ :on "CHI"^^:CpanId ];
+    :runtime-requirement    [ :on "Moo"^^:CpanId ];
+    :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];     
+    :runtime-requirement    [ :on "Types::URI"^^:CpanId ];     
+    :runtime-requirement    [ :on "LWP::UserAgent"^^:CpanId ];     
+    :develop-recommendation [ :on "Dist::Inkt 0.001"^^:CpanId ];
+    .
 
