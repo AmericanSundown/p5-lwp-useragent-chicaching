@@ -99,11 +99,53 @@ around request => sub {
 	my $cached = $self->cache->get($self->key); # CHI will take care of expiration
 
 	if (defined($cached)) {
+		######## Here, we decide whether to reuse a cached response.
+		######## The standard describing this is:
+		######## http://tools.ietf.org/html/rfc7234#section-4
 		return $cached;
 	} else {
+		######## Here, we decide whether to store a response
+		######## This is defined in:
+		######## http://tools.ietf.org/html/rfc7234#section-3
+		# Quoting the standard
+
+		## A cache MUST NOT store a response to any request, unless:
+		
+		## o  The request method is understood by the cache and defined as being
+		##    cacheable, and
+		# TODO: Ok, only GET supported, see above
+		
+		## o  the "no-store" cache directive (see Section 5.2) does not appear
+		##    in request or response header fields, and
+		
+		## o  the "private" response directive (see Section 5.2.2.6) does not
+		##    appear in the response, if the cache is shared, and
+		
+		## o  the Authorization header field (see Section 4.2 of [RFC7235]) does
+		##    not appear in the request, if the cache is shared, unless the
+		##    response explicitly allows it (see Section 3.2), and
+		
+		## o  the response either:
+		
+		##    *  contains an Expires header field (see Section 5.3), or
+		
+		##    *  contains a max-age response directive (see Section 5.2.2.8), or
+		
+		##    *  contains a s-maxage response directive (see Section 5.2.2.9)
+		##       and the cache is shared, or
+		
+		##    *  contains a Cache Control Extension (see Section 5.2.3) that
+		##       allows it to be cached, or
+		
+		##    *  has a status code that is defined as cacheable by default (see
+		##       Section 4.2.2), or
+		
+		##    *  contains a public response directive (see Section 5.2.2.5).
+
 		my $expires_in = 0;
 		my $res = $self->$orig(@args);
-		if ($res->is_success) { # Cache only successful responses for now
+		## o  the response status code is understood by the cache, and
+		if ($res->is_success) { # TODO: Cache only successful responses for now
 			my $cc = $res->header('Cache-Control');
 			if (defined($cc)) {
 				($expires_in) = ($cc =~ m/max-age=(\d+)/);
