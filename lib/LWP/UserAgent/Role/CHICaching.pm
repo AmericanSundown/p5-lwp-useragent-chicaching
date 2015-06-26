@@ -3,10 +3,8 @@ package LWP::UserAgent::Role::CHICaching;
 use 5.006000;
 use CHI;
 use Moo::Role;
-use Types::Standard qw(Str Bool InstanceOf);
+use Types::Standard qw(Str Bool Ref InstanceOf);
 use Types::URI -all;
-use DateTime::Format::HTTP;
-use Try::Tiny;
 
 our $AUTHORITY = 'cpan:KJETILK';
 our $VERSION   = '0.002';
@@ -68,6 +66,14 @@ Wrapping L<LWP::UserAgent>'s request method.
 A boolean value to set whether the cache can be shared. The default is
 that it is.
 
+=item C<< heuristics_opts >>
+
+A hashref that is passed to the C<freshness_lifetime> method of
+L<HTTP::Response>, and used to determine the behaviour of the
+heuristic lifetime. By default, heuristic freshness lifetime is off,
+only standards-compliant freshness lifetime (i.e. based on the
+Cache-Control and Expires headers) are used.
+
 =back
 
 =cut
@@ -95,9 +101,15 @@ has request_uri => (
 						 );
 
 has is_shared => (
-					is => 'rw',
-					isa => Bool,
-					default => 1);
+						is => 'rw',
+						isa => Bool,
+						default => 1);
+
+has heuristics_opts => (
+								is => 'rw',
+								isa => Ref['HASH'],
+								default => sub {return {heuristic_expiry => 0}}
+							  );
 
 around request => sub {
 	my ($orig, $self) = (shift, shift);
@@ -110,6 +122,7 @@ around request => sub {
 
 	my $cached = $self->cache->get($self->key); # CHI will take care of expiration
 
+	my $expires_in = 0;
 	if (defined($cached)) {
 		######## Here, we decide whether to reuse a cached response.
 		######## The standard describing this is:
@@ -128,17 +141,10 @@ around request => sub {
 		# TODO: Ok, only GET supported, see above
 		
 		
-		my $expires_in = 0;
 		my $res = $self->$orig(@args);
 		## o  the response status code is understood by the cache, and
 		if ($res->is_success) { # TODO: Cache only successful responses for now
-			try {
-				my $then = DateTime::Format::HTTP->parse_datetime($res->header('Expires'));
-				my $now = DateTime::Format::HTTP->parse_datetime($res->header('Date'));
-				my $dur = $then->subtract_datetime_absolute($now);
-				$expires_in = $dur->seconds;
-			}; # If it croaks, we will not use anyway.
-			my $cc = $res->header('Cache-Control');
+			my $cc = join('|',$res->header('Cache-Control')); # Since we only do string matching, this should be ok
 			if (defined($cc)) {
 				## o  the "no-store" cache directive (see Section 5.2) does not appear
 				##    in request or response header fields, and
@@ -157,19 +163,19 @@ around request => sub {
 				## o  the response either:
 				##
 				##    *  contains an Expires header field (see Section 5.3), or
-				# Done above, so that the Expires header may be
-				# independent of the Cache-Control header
-
 				##    *  contains a max-age response directive (see Section 5.2.2.8), or
-				($expires_in) = ($cc =~ m/max-age=(\d+)/);
+				# This is implemented in HTTP::Response, but it relates to the old RFC2616
+				# and doesn't support shared caches.
+				$expires_in = $res->freshness_lifetime(%{$self->heuristics_opts}) || 0;
 
 				##    *  contains a s-maxage response directive (see Section 5.2.2.9)
 				##       and the cache is shared, or
-				if ($self->is_shared && ($cc =~ m/s-maxage=(\d+)/)) {
+
+				if ($self->is_shared && ($cc =~ m/s-maxage\s*=\s*(\d+)/)) {
 					$expires_in = $1;
 				}
 
-				# TODO: Calculate heuristic freshness lifetime
+
 
 				##    *  contains a Cache Control Extension (see Section 5.2.3) that
 				##       allows it to be cached, or
@@ -197,9 +203,7 @@ __END__
 
 =head1 LIMITATIONS
 
-Will only cache C<GET> requests and only looks at the C<Cache-Control:
-max-age> header. Does not make any attempts to see if the response is
-invalid.
+Will only cache C<GET> requests, and only successful responses.
 
 =head1 BUGS
 
