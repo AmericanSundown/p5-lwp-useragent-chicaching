@@ -29,17 +29,23 @@ my $res1 = $ua->get("http://localhost:3000/?query=DAHUT");
 isa_ok($res1, 'HTTP::Response');
 like($res1->content, qr/Hello DAHUT/, 'First request, got the right shout');
 like($res1->content, qr/Counter: 1$/, 'First request, correct count');
+is($res1->freshness_lifetime, 4, 'Freshness lifetime is 4 secs');
+
 
 my $cres = $cache->get("http://localhost:3000/?query=DAHUT");
 isa_ok($cres, 'HTTP::Response');
+
+note "Sleep 2 secs to see Age";
+sleep 2;
 
 my $res2 = $ua->get("http://localhost:3000/?query=DAHUT");
 like($res2->content, qr/Hello DAHUT/, 'Second request, got the right shout');
 like($res2->content, qr/Counter: 1$/, 'Second request, the count is the same');
 unlike($res2->content, qr/Counter: 2/, 'Second request, the count is not 2');
+is($res2->header('Age'), 2, 'The Age of resource is 2 secs');
 
-note "Sleep 5 secs to expire cache";
-sleep 5;
+note "Sleep 3 secs to expire cache";
+sleep 3;
 
 my $res3 = $ua->get("http://localhost:3000/?query=DAHUT");
 like($res3->content, qr/Hello DAHUT/, 'Third request, got the right shout');

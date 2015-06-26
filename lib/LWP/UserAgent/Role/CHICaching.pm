@@ -127,8 +127,11 @@ around request => sub {
 		######## Here, we decide whether to reuse a cached response.
 		######## The standard describing this is:
 		######## http://tools.ietf.org/html/rfc7234#section-4
+		$cached->header('Age' => $cached->current_age);
 		return $cached;
 	} else {
+		my $res = $self->$orig(@args);
+
 		######## Here, we decide whether to store a response
 		######## This is defined in:
 		######## http://tools.ietf.org/html/rfc7234#section-3
@@ -139,9 +142,7 @@ around request => sub {
 		## o  The request method is understood by the cache and defined as being
 		##    cacheable, and
 		# TODO: Ok, only GET supported, see above
-		
-		
-		my $res = $self->$orig(@args);
+
 		## o  the response status code is understood by the cache, and
 		if ($res->is_success) { # TODO: Cache only successful responses for now
 			my $cc = join('|',$res->header('Cache-Control')); # Since we only do string matching, this should be ok
