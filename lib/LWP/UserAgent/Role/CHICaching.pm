@@ -123,10 +123,11 @@ around request => sub {
 	my $cached = $self->cache->get($self->key); # CHI will take care of expiration
 
 	my $expires_in = 0;
-	if (defined($cached)) {
+	if (defined($cached) && (!defined ($cached->header('Vary')))) {
 		######## Here, we decide whether to reuse a cached response.
 		######## The standard describing this is:
 		######## http://tools.ietf.org/html/rfc7234#section-4
+		# TODO: Vary is complex, we can't support that for now
 		$cached->header('Age' => $cached->current_age);
 		return $cached;
 	} else {
