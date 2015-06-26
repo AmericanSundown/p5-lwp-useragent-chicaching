@@ -10,7 +10,9 @@
     :runtime-requirement    [ :on "Moo"^^:CpanId ];
     :runtime-requirement    [ :on "Types::Standard"^^:CpanId ];     
     :runtime-requirement    [ :on "Types::URI"^^:CpanId ];     
-    :runtime-requirement    [ :on "LWP::UserAgent"^^:CpanId ];     
+    :runtime-requirement    [ :on "LWP::UserAgent"^^:CpanId ];
+    :runtime-requirement    [ :on "DateTime::Format::HTTP"^^:CpanId ];
+    :runtime-requirement    [ :on "Try::Tiny"^^:CpanId ];     
     :develop-recommendation [ :on "Dist::Inkt 0.001"^^:CpanId ];
     .
 
