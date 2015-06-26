@@ -26,8 +26,12 @@ my $cache = CHI->new( driver => 'Memory', global => 1 );
 my $ua = LWP::UserAgent::CHICaching->new(cache => $cache);
 
 my $res1 = $ua->get("http://localhost:3000/?query=DAHUT");
+isa_ok($res1, 'HTTP::Response');
 like($res1->content, qr/Hello DAHUT/, 'First request, got the right shout');
 like($res1->content, qr/Counter: 1$/, 'First request, correct count');
+
+my $cres = $cache->get("http://localhost:3000/?query=DAHUT");
+isa_ok($cres, 'HTTP::Response');
 
 my $res2 = $ua->get("http://localhost:3000/?query=DAHUT");
 like($res2->content, qr/Hello DAHUT/, 'Second request, got the right shout');
