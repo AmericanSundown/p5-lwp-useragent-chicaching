@@ -45,8 +45,9 @@ because I wanted to focus on HTTP 1.1 features.
 
 =head1 TODO
 
-This is a very early release, meant just for the author's immediate
-needs. These are the things that I'd like to do:
+This is an early release, but it supports RFC7234 quite well
+already. Much work remains though. These are the things that I'd like
+to do:
 
 =over
 
@@ -55,7 +56,7 @@ identical content can be cached efficiently even though they may have
 different URIs.
 
 =item * Support all of L<RFC7234|http://tools.ietf.org/html/rfc7234>
-and <RFC7232|http://tools.ietf.org/html/rfc7232>
+and L<RFC7232|http://tools.ietf.org/html/rfc7232>
 
 =back
 
