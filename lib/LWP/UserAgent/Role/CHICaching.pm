@@ -134,7 +134,8 @@ around request => sub {
 		if ($res->is_success) { # TODO: Cache only successful responses for now
 			try {
 				my $then = DateTime::Format::HTTP->parse_datetime($res->header('Expires'));
-				my $dur = $then->subtract_datetime_absolute(DateTime->now);
+				my $now = DateTime::Format::HTTP->parse_datetime($res->header('Date'));
+				my $dur = $then->subtract_datetime_absolute($now);
 				$expires_in = $dur->seconds;
 			}; # If it croaks, we will not use anyway.
 			my $cc = $res->header('Cache-Control');
@@ -164,9 +165,11 @@ around request => sub {
 
 				##    *  contains a s-maxage response directive (see Section 5.2.2.9)
 				##       and the cache is shared, or
-				if ($self->is_shared) {
-					($expires_in) = ($cc =~ m/s-maxage=(\d+)/);
+				if ($self->is_shared && ($cc =~ m/s-maxage=(\d+)/)) {
+					$expires_in = $1;
 				}
+
+				# TODO: Calculate heuristic freshness lifetime
 
 				##    *  contains a Cache Control Extension (see Section 5.2.3) that
 				##       allows it to be cached, or
