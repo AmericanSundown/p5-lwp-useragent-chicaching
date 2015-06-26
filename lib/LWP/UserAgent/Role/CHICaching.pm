@@ -72,7 +72,7 @@ A hashref that is passed to the C<freshness_lifetime> method of
 L<HTTP::Response>, and used to determine the behaviour of the
 heuristic lifetime. By default, heuristic freshness lifetime is off,
 only standards-compliant freshness lifetime (i.e. based on the
-Cache-Control and Expires headers) are used.
+C<Cache-Control> and C<Expires> headers) are used.
 
 =back
 
@@ -205,6 +205,11 @@ __END__
 =head1 LIMITATIONS
 
 Will only cache C<GET> requests, and only successful responses.
+
+It does not consider the C<Vary> field.
+
+The module does not validate and does not serve stale responses, even
+when it would be allowed to do so.
 
 =head1 BUGS
 
