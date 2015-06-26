@@ -14,3 +14,19 @@
                    dcs:thanks cpan:MSTROUT 
                  ]
             ].
+
+`LWP-UserAgent-CHICaching 0.01 cpan:KJETILK`
+	issued  2015-06-26;
+	label   "Improve support for RFC7234";
+	changeset [
+            dcs:versus `LWP-UserAgent-CHICaching 0.002 cpan:KJETILK`;
+            item [ rdfs:label "Support large parts of RFC7234.";
+                   a dcs:Addition;
+                 ]
+            item [ rdfs:label "Add Perl version dep for better kwalitee.";
+                   a dcs:Addition;
+                 ]
+            item [ rdfs:label "Improve distro metadata.";
+                   a dcs:Addition;
+                 ]
+            ].
