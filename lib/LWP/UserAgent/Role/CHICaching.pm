@@ -3,7 +3,7 @@ package LWP::UserAgent::Role::CHICaching;
 use 5.006000;
 use CHI;
 use Moo::Role;
-use Types::Standard qw(Str InstanceOf);
+use Types::Standard qw(Str Bool InstanceOf);
 use Types::URI -all;
 use DateTime::Format::HTTP;
 use Try::Tiny;
@@ -143,14 +143,14 @@ around request => sub {
 				## o  the "no-store" cache directive (see Section 5.2) does not appear
 				##    in request or response header fields, and
 				return $res if ($cc =~ m/no-store|no-cache/); # TODO: Improve no-cache use
-				if ($self-is_shared) {
+				if ($self->is_shared) {
 					## o  the "private" response directive (see Section 5.2.2.6) does not
 					##    appear in the response, if the cache is shared, and
 					return $res if ($cc =~ m/private/);
 					## o  the Authorization header field (see Section 4.2 of [RFC7235]) does
 					##    not appear in the request, if the cache is shared, unless the
 					##    response explicitly allows it (see Section 3.2), and
-					if $request->header('Authorization') {
+					if ($request->header('Authorization')) {
 						return $res unless ($cc =~ m/public|must-revalidate|s-maxage/);
 					}
 				}
