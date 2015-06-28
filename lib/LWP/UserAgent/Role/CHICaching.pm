@@ -3,7 +3,7 @@ package LWP::UserAgent::Role::CHICaching;
 use 5.006000;
 use CHI;
 use Moo::Role;
-use Types::Standard qw(Str Bool Ref InstanceOf);
+use Types::Standard qw(Str Bool Ref CodeRef InstanceOf);
 use Types::URI -all;
 
 our $AUTHORITY = 'cpan:KJETILK';
@@ -111,6 +111,12 @@ has heuristics_opts => (
 								default => sub {return {heuristic_expiry => 0}}
 							  );
 
+has cache_vary => (
+						 is => 'ro',
+						 isa => CodeRef,
+						 default => sub { sub { return 0 } }
+						);
+
 around request => sub {
 	my ($orig, $self) = (shift, shift);
 	my @args = @_;
@@ -123,11 +129,10 @@ around request => sub {
 	my $cached = $self->cache->get($self->key); # CHI will take care of expiration
 
 	my $expires_in = 0;
-	if (defined($cached) && (!defined ($cached->header('Vary')))) {
+	if (defined($cached)) {
 		######## Here, we decide whether to reuse a cached response.
 		######## The standard describing this is:
 		######## http://tools.ietf.org/html/rfc7234#section-4
-		# TODO: Vary is complex, we can't support that for now
 		$cached->header('Age' => $cached->current_age);
 		return $cached;
 	} else {
@@ -146,6 +151,12 @@ around request => sub {
 
 		## o  the response status code is understood by the cache, and
 		if ($res->is_success) { # TODO: Cache only successful responses for now
+
+			# First, we deal superficially with the Vary header, for the
+			# full complexity see
+			# http://tools.ietf.org/html/rfc7234#section-4.1
+			return $res unless ($self->cache_vary);
+
 			my $cc = join('|',$res->header('Cache-Control')); # Since we only do string matching, this should be ok
 			if (defined($cc)) {
 				## o  the "no-store" cache directive (see Section 5.2) does not appear
