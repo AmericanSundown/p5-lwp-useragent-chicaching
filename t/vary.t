@@ -3,8 +3,26 @@ use warnings;
 
 use Test::More;
 use LWP::Protocol::PSGI;
+use LWP::UserAgent;
 use CHI;
 use Plack::Request;
+
+package TestUAManual {
+	use Moo;
+	use Types::Standard qw(Str);
+	extends 'LWP::UserAgent';
+	has key => (
+				is => 'rw',
+				isa => Str,
+				lazy => 1,
+				clearer => 1,
+				builder => '_build_key'
+			  );
+
+	sub _build_key { shift->request_uri->canonical->as_string }
+
+	with 'LWP::UserAgent::Role::CHICaching', 'LWP::UserAgent::Role::CHICaching::VaryNotAsterisk';
+}
 
 use_ok('LWP::UserAgent::CHICaching');
 
@@ -49,6 +67,35 @@ subtest 'Testing normal UA with Vary: *' => sub {
 	is($res1->content, 'Hello dahut', 'First request, got the right shout');
 	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
 	is($uabasic->cache_vary($res1), 0, 'Vary header present, so we cant cache');
+	is($res1->header('Vary'), '*', 'Check the actual header');
+};
+
+subtest 'Testing manually composed UA without Vary' => sub {
+	my $uamanual = TestUAManual->new(cache => $cache);
+	my $res1 = $uamanual->get("http://localhost:3000/");
+	isa_ok($res1, 'HTTP::Response');
+	is($res1->content, 'Hello dahut', 'First request, got the right shout');
+	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
+	is($uamanual->cache_vary($res1), 1, 'Vary header not present, so we can cache');
+};
+
+subtest 'Testing manually composed UA with Vary' => sub {
+	my $uamanual = TestUAManual->new(cache => $cache);
+	my $res1 = $uamanual->get("http://localhost:3000/?vary=accept");
+	isa_ok($res1, 'HTTP::Response');
+	is($res1->content, 'Hello dahut', 'First request, got the right shout');
+	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
+	is($uamanual->cache_vary($res1), 1, 'Vary header with accept present, we can cache that');
+	is($res1->header('Vary'), 'accept', 'Check the actual header');
+};
+
+subtest 'Testing manually composed UA with Vary: *' => sub {
+	my $uamanual = TestUAManual->new(cache => $cache);
+	my $res1 = $uamanual->get("http://localhost:3000/?vary=*");
+	isa_ok($res1, 'HTTP::Response');
+	is($res1->content, 'Hello dahut', 'First request, got the right shout');
+	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
+	is($uamanual->cache_vary($res1), 0, 'Vary header present, so we cant cache');
 	is($res1->header('Vary'), '*', 'Check the actual header');
 };
 
