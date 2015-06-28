@@ -8,7 +8,7 @@ our $VERSION   = '0.01';
 use Moo;
 
 extends 'LWP::UserAgent';
-with 'LWP::UserAgent::Role::CHICaching';
+with 'LWP::UserAgent::Role::CHICaching', 'LWP::UserAgent::Role::CHICaching::SimpleKeyGen';
 
 1;
 

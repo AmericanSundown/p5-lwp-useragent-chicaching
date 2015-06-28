@@ -3,7 +3,7 @@ package LWP::UserAgent::Role::CHICaching;
 use 5.006000;
 use CHI;
 use Moo::Role;
-use Types::Standard qw(Str Bool Ref CodeRef InstanceOf);
+use Types::Standard qw(Str Bool Ref InstanceOf);
 use Types::URI -all;
 
 our $AUTHORITY = 'cpan:KJETILK';
@@ -24,7 +24,7 @@ Compose it into a class, e.g.
   package LWP::UserAgent::MyCacher;
   use Moo;
   extends 'LWP::UserAgent';
-  with 'LWP::UserAgent::Role::CHICaching';
+  with 'LWP::UserAgent::Role::CHICaching', 'LWP::UserAgent::Role::CHICaching::SimpleKeyGen';
 
 
 =head1 DESCRIPTION
@@ -46,11 +46,7 @@ class you can use.
 
 Used to set the C<CHI> object to be used as cache in the constructor.
 
-=item C<< key >>, C<< clear_key >>
 
-The key to use for a response. Defaults to the canonical URI of the
-request. May make sense to set differently in the future, but should
-probably be left alone for now.
 
 =item C<< request_uri >>
 
@@ -76,6 +72,27 @@ C<Cache-Control> and C<Expires> headers) are used.
 
 =back
 
+=head2 Implemented elsewhere
+
+The following are required by this role, but implemented
+elsewhere. See L<LWP::UserAgent::Role::CHICaching::SimpleKeyGen> for
+further explanations.
+
+=over
+
+=item C<< key >>, C<< clear_key >>
+
+The key to use for a response.
+
+=item C<< cache_vary($response) >>
+
+A method that returns true if the response may be cached even if it
+contains a C<Vary> header, false otherwise. The L<HTTP::Response>
+object will be passed to it as a parameter.
+
+
+=back
+
 =cut
 
 has cache => (
@@ -84,14 +101,9 @@ has cache => (
 				  required => 1,
 				 );
 
-has key => (
-				is => 'rw',
-				isa => Str,
-				lazy => 1,
-				clearer => 1,
-				builder => sub { shift->request_uri->canonical->as_string }
-			  );
 
+requires 'key';
+requires 'cache_vary';
 
 has request_uri => (
 						  is =>'rw',
@@ -110,12 +122,6 @@ has heuristics_opts => (
 								isa => Ref['HASH'],
 								default => sub {return {heuristic_expiry => 0}}
 							  );
-
-has cache_vary => (
-						 is => 'ro',
-						 isa => CodeRef,
-						 default => sub { sub { return 0 } }
-						);
 
 around request => sub {
 	my ($orig, $self) = (shift, shift);
@@ -155,7 +161,7 @@ around request => sub {
 			# First, we deal superficially with the Vary header, for the
 			# full complexity see
 			# http://tools.ietf.org/html/rfc7234#section-4.1
-			return $res unless ($self->cache_vary);
+			return $res unless ($self->cache_vary($res));
 
 			my $cc = join('|',$res->header('Cache-Control')); # Since we only do string matching, this should be ok
 			if (defined($cc)) {
@@ -217,8 +223,6 @@ __END__
 =head1 LIMITATIONS
 
 Will only cache C<GET> requests, and only successful responses.
-
-It does not consider the C<Vary> field.
 
 The module does not validate and does not serve stale responses, even
 when it would be allowed to do so.
