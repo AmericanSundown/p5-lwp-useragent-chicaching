@@ -30,6 +30,7 @@ isa_ok($res1, 'HTTP::Response');
 like($res1->content, qr/Hello DAHUT/, 'First request, got the right shout');
 like($res1->content, qr/Counter: 1$/, 'First request, correct count');
 is($res1->freshness_lifetime, 4, 'Freshness lifetime is 4 secs');
+is($ua->cache_vary($res1), 1, 'Vary header not present, so we can cache');
 
 
 my $cres = $cache->get("http://localhost:3000/?query=DAHUT");
@@ -43,6 +44,7 @@ like($res2->content, qr/Hello DAHUT/, 'Second request, got the right shout');
 like($res2->content, qr/Counter: 1$/, 'Second request, the count is the same');
 unlike($res2->content, qr/Counter: 2/, 'Second request, the count is not 2');
 is($res2->header('Age'), 2, 'The Age of resource is 2 secs');
+is($ua->cache_vary($res2), 1, 'Vary header not present, so we can cache');
 
 note "Sleep 3 secs to expire cache";
 sleep 3;
