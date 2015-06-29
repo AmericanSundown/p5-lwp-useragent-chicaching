@@ -6,6 +6,7 @@
     :test-requirement       [ :on "Test::More 0.96"^^:CpanId ];
     :test-requirement       [ :on "LWP::Protocol::PSGI"^^:CpanId ];
     :test-requirement       [ :on "Plack::Request"^^:CpanId ];
+    :test-requirement       [ :on "perl 5.014000"^^:CpanId ];
     :runtime-requirement    [ :on "perl 5.006000"^^:CpanId ];
     :runtime-requirement    [ :on "CHI"^^:CpanId ];
     :runtime-requirement    [ :on "Moo 1.006000"^^:CpanId ];
