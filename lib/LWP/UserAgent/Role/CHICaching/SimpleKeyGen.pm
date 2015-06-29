@@ -53,6 +53,8 @@ request as a string, which is a reasonable default.
 
 Will never allow a response with a C<Vary> header to be cached.
 
+=back
+
 =cut
 
 
@@ -64,7 +66,7 @@ has key => (
 				builder => '_build_key'
 			  );
 
-sub _build_key { shift->request_uri->canonical->as_string }
+sub _build_key { return shift->request_uri->canonical->as_string }
 
 sub cache_vary {
 	my ($self, $res) = @_;

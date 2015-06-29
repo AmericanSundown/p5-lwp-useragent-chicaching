@@ -38,6 +38,8 @@ make it compliant.
 Allow a response with a C<Vary> header to be cached if it doesn't
 contain an asterisk (*).
 
+=back
+
 =cut
 
 sub cache_vary {
