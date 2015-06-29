@@ -1,7 +1,12 @@
+
+BEGIN {
+	use Test::More;
+	if ($] < 5.014) { plan skip_all => 'Contains things old perls cannot parse'; }
+}
+
 use strict;
 use warnings;
 
-use Test::More;
 use LWP::Protocol::PSGI;
 use LWP::UserAgent;
 use CHI;
