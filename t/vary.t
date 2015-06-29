@@ -24,6 +24,15 @@ package TestUAManual {
 	with 'LWP::UserAgent::Role::CHICaching', 'LWP::UserAgent::Role::CHICaching::VaryNotAsterisk';
 }
 
+package TestUACompose {
+	use Moo;
+	use Types::Standard qw(Str);
+	extends 'LWP::UserAgent';
+	with 'LWP::UserAgent::Role::CHICaching';
+	with 'LWP::UserAgent::Role::CHICaching::VaryNotAsterisk';
+	with 'LWP::UserAgent::Role::CHICaching::SimpleKeyGen';
+}
+
 use_ok('LWP::UserAgent::CHICaching');
 
 my $app = sub {
@@ -96,6 +105,36 @@ subtest 'Testing manually composed UA with Vary: *' => sub {
 	is($res1->content, 'Hello dahut', 'First request, got the right shout');
 	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
 	is($uamanual->cache_vary($res1), 0, 'Vary header present, so we cant cache');
+	is($res1->header('Vary'), '*', 'Check the actual header');
+};
+
+
+subtest 'Testing manually composed UA without Vary' => sub {
+	my $uacompose = TestUACompose->new(cache => $cache);
+	my $res1 = $uacompose->get("http://localhost:3000/");
+	isa_ok($res1, 'HTTP::Response');
+	is($res1->content, 'Hello dahut', 'First request, got the right shout');
+	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
+	is($uacompose->cache_vary($res1), 1, 'Vary header not present, so we can cache');
+};
+
+subtest 'Testing manually composed UA with Vary' => sub {
+	my $uacompose = TestUACompose->new(cache => $cache);
+	my $res1 = $uacompose->get("http://localhost:3000/?vary=accept");
+	isa_ok($res1, 'HTTP::Response');
+	is($res1->content, 'Hello dahut', 'First request, got the right shout');
+	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
+	is($uacompose->cache_vary($res1), 1, 'Vary header with accept present, we can cache that');
+	is($res1->header('Vary'), 'accept', 'Check the actual header');
+};
+
+subtest 'Testing manually composed UA with Vary: *' => sub {
+	my $uacompose = TestUACompose->new(cache => $cache);
+	my $res1 = $uacompose->get("http://localhost:3000/?vary=*");
+	isa_ok($res1, 'HTTP::Response');
+	is($res1->content, 'Hello dahut', 'First request, got the right shout');
+	is($res1->freshness_lifetime, 100, 'Freshness lifetime is 100 secs');
+	is($uacompose->cache_vary($res1), 0, 'Vary header present, so we cant cache');
 	is($res1->header('Vary'), '*', 'Check the actual header');
 };
 
