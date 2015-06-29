@@ -1,5 +1,16 @@
 # This file acts as the project's changelog.
 
+`LWP-UserAgent-CHICaching 0.03 cpan:KJETILK`
+	issued  2015-06-29;
+	label   "Fix testing on old Perls";
+	changeset [
+            dcs:versus `LWP-UserAgent-CHICaching 0.02 cpan:KJETILK`;
+            item [ rdfs:label "Skip some tests on old Perl versions, that doesn't support test syntax.";
+                   a dcs:Change;
+                 ];
+        ].
+    
+
 `LWP-UserAgent-CHICaching 0.02 cpan:KJETILK`
 	issued  2015-06-29;
 	label   "Improve the support for Vary header";
