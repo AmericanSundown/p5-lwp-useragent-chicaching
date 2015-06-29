@@ -36,7 +36,9 @@ cache key based on not only the URI, but also on the content
 (e.g. C<Content-Language: en>), and so, provide a better
 implementation of the C<key> attribute, and then, you also need to
 tell the system when it is OK to cache something with a C<Vary> header
-by making the C<cache_vary> method smarter.
+by making the C<cache_vary> method smarter. See
+L<LWP::UserAgent::Role::CHICaching::VaryNotAsterisk> for an example of
+an alternative.
 
 =head2 Attributes and Methods
 
