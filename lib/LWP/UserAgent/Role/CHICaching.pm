@@ -225,7 +225,8 @@ __END__
 Will only cache C<GET> requests, and only successful responses.
 
 The module does not validate and does not serve stale responses, even
-when it would be allowed to do so.
+when it would be allowed to do so. It nevertheless does most of
+RFC7234.
 
 =head1 BUGS
 
