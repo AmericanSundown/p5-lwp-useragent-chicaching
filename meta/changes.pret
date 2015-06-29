@@ -1,5 +1,31 @@
 # This file acts as the project's changelog.
 
+`LWP-UserAgent-CHICaching 0.02 cpan:KJETILK`
+	issued  2015-06-29;
+	label   "Improve the support for Vary header";
+	changeset [
+            dcs:versus `LWP-UserAgent-CHICaching 0.01 cpan:KJETILK`;
+            item [ rdfs:label "Refactor key and logic for Vary headers in roles on their own.";
+                   a dcs:Addition;
+                 ];
+            item [ rdfs:label "Add Moo version dep for coerce to work.";
+                   a dcs:Change;
+                 ];
+            item [ rdfs:label "New role for simplest keys and Vary treatment.";
+                   a dcs:Addition;
+                 ];
+            item [ rdfs:label "New role for when Vary is *.";
+                   a dcs:Addition;
+                 ];
+            item [ rdfs:label "Improve documentation.";
+                   a dcs:Addition;
+                 ];
+            item [ rdfs:label "More tests.";
+                   a dcs:Addition;
+                 ]
+    
+            ].
+
 `LWP-UserAgent-CHICaching 0.01 cpan:KJETILK`
 	issued  2015-06-26;
 	label   "Improve support for RFC7234";
