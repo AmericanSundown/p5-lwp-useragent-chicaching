@@ -6,7 +6,7 @@ use Moo::Role;
 use Types::Standard qw(Str);
 
 our $AUTHORITY = 'cpan:KJETILK';
-our $VERSION   = '0.01';
+our $VERSION   = '0.02';
 
 =pod
 
