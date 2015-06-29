@@ -53,7 +53,8 @@ to do:
 
 =item * Enable smarter generation of keys, so that semantically
 identical content can be cached efficiently even though they may have
-different URIs.
+different URIs. This can be done in a separate role with the current
+code.
 
 =item * Support all of L<RFC7234|http://tools.ietf.org/html/rfc7234>
 and L<RFC7232|http://tools.ietf.org/html/rfc7232>
