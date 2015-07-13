@@ -43,7 +43,7 @@ my $res2 = $ua->get("http://localhost:3000/?query=DAHUT");
 like($res2->content, qr/Hello DAHUT/, 'Second request, got the right shout');
 like($res2->content, qr/Counter: 1$/, 'Second request, the count is the same');
 unlike($res2->content, qr/Counter: 2/, 'Second request, the count is not 2');
-is($res2->header('Age'), 2, 'The Age of resource is 2 secs');
+like($res2->header('Age'), qr/^2|3$/, 'The Age of resource is 2 secs');
 is($ua->cache_vary($res2), 1, 'Vary header not present, so we can cache');
 
 note "Sleep 3 secs to expire cache";
