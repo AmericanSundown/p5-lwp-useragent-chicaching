@@ -24,7 +24,9 @@ Compose it into a class, e.g.
   package LWP::UserAgent::MyCacher;
   use Moo;
   extends 'LWP::UserAgent';
-  with 'LWP::UserAgent::Role::CHICaching', 'LWP::UserAgent::Role::CHICaching::SimpleKeyGen';
+  with 'LWP::UserAgent::Role::CHICaching',
+       'LWP::UserAgent::Role::CHICaching::SimpleKeyGen',
+       'LWP::UserAgent::Role::Body';
 
 
 =head1 DESCRIPTION
@@ -75,8 +77,8 @@ C<Cache-Control> and C<Expires> headers) are used.
 =head2 Implemented elsewhere
 
 The following are required by this role, but implemented
-elsewhere. See L<LWP::UserAgent::Role::CHICaching::SimpleKeyGen> for
-further explanations.
+elsewhere. See L<LWP::UserAgent::Role::CHICaching::SimpleKeyGen> and
+L<LWP::UserAgent::Role::Body> for further explanations.
 
 =over
 
@@ -89,6 +91,17 @@ The key to use for a response.
 A method that returns true if the response may be cached even if it
 contains a C<Vary> header, false otherwise. The L<HTTP::Response>
 object will be passed to it as a parameter.
+
+=item C<< finalize($cached) >>
+
+A method that takes the cached entry as an argument, and will return a
+L<HTTP::Response> to return to the client. The default is to simply
+cache and return the response.
+
+=item C<< cache_set($response, $expires_in) >>
+
+A method that takes the L<HTTP::Response> from the client and an
+expires time in seconds and set the actual cache.
 
 
 =back
