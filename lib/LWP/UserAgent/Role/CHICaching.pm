@@ -117,6 +117,8 @@ has cache => (
 
 requires 'key';
 requires 'cache_vary';
+requires 'finalize';
+requires 'cache_set';
 
 has request_uri => (
 						  is =>'rw',
