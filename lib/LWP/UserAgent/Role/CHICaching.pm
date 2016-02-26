@@ -259,7 +259,7 @@ Thanks to Matt S. Trout for rewriting this to a Role.
 
 =head1 COPYRIGHT AND LICENCE
 
-This software is copyright (c) 2015 by Kjetil Kjernsmo.
+This software is copyright (c) 2015, 2016 by Kjetil Kjernsmo.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
