@@ -1,4 +1,4 @@
-package LWP::UserAgent::Role::Body;
+package LWP::UserAgent::Role::CHICaching::Body;
 
 use 5.006000;
 use CHI;

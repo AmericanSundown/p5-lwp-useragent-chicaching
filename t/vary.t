@@ -28,7 +28,7 @@ package TestUAManual {
 
 	with 'LWP::UserAgent::Role::CHICaching',
 	     'LWP::UserAgent::Role::CHICaching::VaryNotAsterisk',
-        'LWP::UserAgent::Role::Body';
+        'LWP::UserAgent::Role::CHICaching::Body';
 }
 
 
