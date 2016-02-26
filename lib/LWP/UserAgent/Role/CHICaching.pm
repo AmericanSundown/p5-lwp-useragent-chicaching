@@ -92,17 +92,15 @@ A method that returns true if the response may be cached even if it
 contains a C<Vary> header, false otherwise. The L<HTTP::Response>
 object will be passed to it as a parameter.
 
-=item C<< finalize($cached) >>
-
-A method that takes the cached entry as an argument, and will return a
-L<HTTP::Response> to return to the client. The default is to simply
-cache and return the response.
-
 =item C<< cache_set($response, $expires_in) >>
 
 A method that takes the L<HTTP::Response> from the client and an
 expires time in seconds and set the actual cache.
 
+=item C<< finalize($cached) >>
+
+A method that takes the cached entry as an argument, and will return a
+L<HTTP::Response> to return to the client.
 
 =back
 
