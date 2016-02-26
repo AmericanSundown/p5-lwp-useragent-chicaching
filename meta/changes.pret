@@ -1,6 +1,16 @@
 # This file acts as the project's changelog.
 
-`LWP-UserAgent-CHICaching 0.03 cpan:KJETILK`
+`LWP-UserAgent-CHICaching 0.03_01 cpan:KJETILK`
+	issued  2016-02-26;
+	label   "Support manipulated the cached response";
+	changeset [
+            dcs:versus `LWP-UserAgent-CHICaching 0.03 cpan:KJETILK`;
+            item [ rdfs:label "Role to control cache insertion and retrieval";
+                   a dcs:Addition;
+                 ];
+        ].
+ 
+   `LWP-UserAgent-CHICaching 0.03 cpan:KJETILK`
 	issued  2015-06-29;
 	label   "Fix testing on old Perls";
 	changeset [
@@ -9,7 +19,7 @@
                    a dcs:Change;
                  ];
         ].
-    
+
 
 `LWP-UserAgent-CHICaching 0.02 cpan:KJETILK`
 	issued  2015-06-29;
