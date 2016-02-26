@@ -140,7 +140,7 @@ around request => sub {
 		######## The standard describing this is:
 		######## http://tools.ietf.org/html/rfc7234#section-4
 		$cached->header('Age' => $cached->current_age);
-		return $cached;
+		return $self->finalize($cached); # TODO: Deal with no-transform
 	} else {
 		my $res = $self->$orig(@args);
 
@@ -209,7 +209,7 @@ around request => sub {
 
 			}
 			if ($expires_in > 0) {
-				$self->cache->set($self->key, $res, { expires_in => $expires_in });
+				$self->cache_set($res, $expires_in);
 			}
 		}
 		return $res;
