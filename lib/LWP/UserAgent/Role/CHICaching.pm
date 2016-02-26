@@ -26,7 +26,7 @@ Compose it into a class, e.g.
   extends 'LWP::UserAgent';
   with 'LWP::UserAgent::Role::CHICaching',
        'LWP::UserAgent::Role::CHICaching::SimpleKeyGen',
-       'LWP::UserAgent::Role::CHICaching::SimpleBody';
+       'LWP::UserAgent::Role::CHICaching::SimpleMungeResponse';
 
 
 =head1 DESCRIPTION
@@ -78,7 +78,7 @@ C<Cache-Control> and C<Expires> headers) are used.
 
 The following are required by this role, but implemented
 elsewhere. See L<LWP::UserAgent::Role::CHICaching::SimpleKeyGen> and
-L<LWP::UserAgent::Role::CHICaching::SimpleBody> for further explanations.
+L<LWP::UserAgent::Role::CHICaching::SimpleMungeResponse> for further explanations.
 
 =over
 

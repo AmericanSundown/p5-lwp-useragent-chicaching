@@ -10,7 +10,7 @@ use Moo;
 extends 'LWP::UserAgent';
 with 'LWP::UserAgent::Role::CHICaching',
      'LWP::UserAgent::Role::CHICaching::SimpleKeyGen',
-     'LWP::UserAgent::Role::CHICaching::SimpleBody';
+     'LWP::UserAgent::Role::CHICaching::SimpleMungeResponse';
 
 1;
 
