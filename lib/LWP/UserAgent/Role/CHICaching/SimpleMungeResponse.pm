@@ -22,37 +22,43 @@ See L<LWP::UserAgent::Role::CHICaching>.
 
 =head1 DESCRIPTION
 
-L<LWP::UserAgent::Role::CHICaching> is a role for creating caching
-user agents. There's some complexity around caching different variants
-of the same resource (e.g. the same thing in different natural
-languages, different serializations that is considered in L<Section
-4.1 of RFC7234|http://tools.ietf.org/html/rfc7234#section-4.1> that
-this role is factored out to address in the dumbest way possible: Just
-don't cache when the problem arises.
+When caching, it is sometimes useful to change the response, in
+particular the body in some way for caching. In some cases, you might
+not want to store the entire body, but compress it in some way, or
+store the data in a different data structure than the serialized
+version shared over the network.
 
-To really solve this problem in a better way, you need to generate a
-cache key based on not only the URI, but also on the content
-(e.g. C<Content-Language: en>), and so, provide a better
-implementation of the C<key> attribute, and then, you also need to
-tell the system when it is OK to cache something with a C<Vary> header
-by making the C<cache_vary> method smarter. See
-L<LWP::UserAgent::Role::CHICaching::VaryNotAsterisk> for an example of
-an alternative.
+The methods here are used to first manipulate the response before it
+is sent to the cache, and then a cached response before it is returned
+to the client.
 
-=head2 Attributes and Methods
+
+
+=head2 Methods
 
 =over
 
-=item C<< key >>, C<< clear_key >>
 
-The key to use for a response. This role will return the canonical URI of the
-request as a string, which is a reasonable default.
+=item C<< cache_set($response, $expires_in) >>
 
-=item C<< cache_vary >>
+A method that takes the L<HTTP::Response> from the client and an
+expires time in seconds and set the actual cache. This role's
+implementation stores the response as it is.
 
-Will never allow a response with a C<Vary> header to be cached.
+
+=item C<< finalize($cached) >>
+
+A method that takes the cached entry as an argument, and will return a
+L<HTTP::Response> to return to the client. This implementation returns
+the response directly from the cache.
 
 =back
+
+=head1 TODO
+
+The standard has a C<no-transform> directive that is relevant to this,
+since roles such as this can be used to transform the response. This
+needs to be dealt with.
 
 =cut
 
@@ -67,3 +73,18 @@ sub cache_set {
 }
 
 1;
+
+
+__END__
+
+
+=head1 AUTHOR
+
+Kjetil Kjernsmo E<lt>kjetilk@cpan.orgE<gt>.
+
+=head1 COPYRIGHT AND LICENCE
+
+This software is copyright (c) 2015 by Kjetil Kjernsmo.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
