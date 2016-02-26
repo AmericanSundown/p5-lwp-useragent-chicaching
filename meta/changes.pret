@@ -8,6 +8,9 @@
             item [ rdfs:label "Role to control cache insertion and retrieval";
                    a dcs:Addition;
                  ];
+            item [ rdfs:label "Make the test test for 2 or 3 second age";
+                   a dcs:Change;
+                 ];
         ].
  
    `LWP-UserAgent-CHICaching 0.03 cpan:KJETILK`
