@@ -1,7 +1,7 @@
 # This file acts as the project's changelog.
 
 `LWP-UserAgent-CHICaching 0.04 cpan:KJETILK`
-	issued  2016-02-26;
+	issued  2016-03-07;
 	label   "Support manipulated the cached response";
 	changeset [
             dcs:versus `LWP-UserAgent-CHICaching 0.03 cpan:KJETILK`;
