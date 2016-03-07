@@ -5,7 +5,7 @@ use CHI;
 use Moo::Role;
 use Types::Standard qw(Bool);
 our $AUTHORITY = 'cpan:KJETILK';
-our $VERSION   = '0.03_01';
+our $VERSION   = '0.04';
 
 =pod
 

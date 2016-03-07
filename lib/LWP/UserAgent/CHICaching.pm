@@ -3,7 +3,7 @@ package LWP::UserAgent::CHICaching;
 use 5.006000;
 
 our $AUTHORITY = 'cpan:KJETILK';
-our $VERSION   = '0.03_01';
+our $VERSION   = '0.04';
 
 use Moo;
 
