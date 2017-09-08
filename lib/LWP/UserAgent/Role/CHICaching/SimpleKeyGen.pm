@@ -26,7 +26,7 @@ See L<LWP::UserAgent::Role::CHICaching>.
 L<LWP::UserAgent::Role::CHICaching> is a role for creating caching
 user agents. There's some complexity around caching different variants
 of the same resource (e.g. the same thing in different natural
-languages, different serializations that is considered in L<Section
+languages, or different serializations) that is considered in L<Section
 4.1 of RFC7234|http://tools.ietf.org/html/rfc7234#section-4.1> that
 this role is factored out to address in the dumbest way possible: Just
 don't cache when the problem arises.
